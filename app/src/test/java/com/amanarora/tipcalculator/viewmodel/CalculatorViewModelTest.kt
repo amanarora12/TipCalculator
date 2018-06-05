@@ -1,5 +1,6 @@
 package com.amanarora.tipcalculator.viewmodel
 
+import com.amanarora.tipcalculators.viewmodel.CalculatorViewModel
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
