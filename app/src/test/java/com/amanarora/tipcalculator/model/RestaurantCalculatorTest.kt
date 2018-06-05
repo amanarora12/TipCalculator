@@ -1,7 +1,5 @@
 package com.amanarora.tipcalculator.model
 
-import com.amanarora.tipcalculators.model.RestaurantCalculator
-import com.amanarora.tipcalculators.model.TipCalculation
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
