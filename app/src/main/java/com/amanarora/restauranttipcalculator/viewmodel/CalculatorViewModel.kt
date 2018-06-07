@@ -7,7 +7,8 @@ import com.amanarora.restauranttipcalculator.R
 import com.amanarora.restauranttipcalculator.model.RestaurantCalculator
 import com.amanarora.restauranttipcalculator.model.TipCalculation
 
-class CalculatorViewModel(val app: Application, val calculator : RestaurantCalculator = RestaurantCalculator()) : BaseObservable() {
+class CalculatorViewModel @JvmOverloads constructor(
+        app: Application, val calculator : RestaurantCalculator = RestaurantCalculator()) : ObservableViewModel(app) {
 
     var inputCheckAmount = ""
     var inputTipPercentage = ""
@@ -21,9 +22,9 @@ class CalculatorViewModel(val app: Application, val calculator : RestaurantCalcu
     }
 
     private fun updateOutputs(tc: TipCalculation) {
-        outputCheckAmount = app.getString(R.string.dollar_amount,tc.checkAmount)
-        outputTipAmount = app.getString(R.string.dollar_amount, tc.tipAmount)
-        outputTotalAmount = app.getString(R.string.dollar_amount, tc.grandTotal)
+        outputCheckAmount = getApplication<Application>().getString(R.string.dollar_amount,tc.checkAmount)
+        outputTipAmount = getApplication<Application>().getString(R.string.dollar_amount, tc.tipAmount)
+        outputTotalAmount = getApplication<Application >().getString(R.string.dollar_amount, tc.grandTotal)
     }
 
     fun calculateTip() {
@@ -33,15 +34,9 @@ class CalculatorViewModel(val app: Application, val calculator : RestaurantCalcu
         if (checkAmount != null && tipPct != null) {
             Log.d(TAG, "Check Amount: $checkAmount and Tip Percent: $tipPct")
             updateOutputs(calculator.calculateTip(checkAmount, tipPct))
-            clearInputs()
+            notifyChange()
         }
 
-    }
-
-    private fun clearInputs() {
-        inputCheckAmount = "0.00"
-        inputTipPercentage = "0"
-        notifyChange()
     }
 }
 
