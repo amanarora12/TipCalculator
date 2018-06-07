@@ -1,5 +1,7 @@
 package com.amanarora.restauranttipcalculator.viewmodel
 
+import android.app.Application
+import com.amanarora.restauranttipcalculator.R
 import com.amanarora.restauranttipcalculator.model.RestaurantCalculator
 import com.amanarora.restauranttipcalculator.model.TipCalculation
 import junit.framework.Assert.assertEquals
@@ -17,10 +19,18 @@ class CalculatorViewModelTest {
     @Mock
     lateinit var mockCalculator : RestaurantCalculator
 
+    @Mock
+    lateinit var application: Application
+
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        calculatorViewModel = CalculatorViewModel(mockCalculator)
+        stubResource(0.0,"$0.00")
+        calculatorViewModel = CalculatorViewModel(application, mockCalculator)
+    }
+
+    private fun stubResource(given: Double, returnStub: String) {
+        `when`(application.getString(R.string.dollar_amount, given)).thenReturn(returnStub)
     }
 
     @Test
@@ -30,11 +40,17 @@ class CalculatorViewModelTest {
 
         val stub = TipCalculation(checkAmount = 10.00, tipAmount = 1.5, grandTotal = 11.5)
         `when`(mockCalculator.calculateTip(10.00,15)).thenReturn(stub)
+        stubResource(10.0, "$10.00")
+        stubResource(1.5, "$1.50")
+        stubResource(11.5, "$11.50")
 
         calculatorViewModel.calculateTip()
 
-        assertEquals(stub, calculatorViewModel.tipCalculation)
-       /* assertEquals(10.00, calculatorViewModel.tipCalculation.checkAmount)
+        assertEquals("$10.00", calculatorViewModel.outputCheckAmount)
+        assertEquals("$1.50", calculatorViewModel.outputTipAmount)
+        assertEquals("$11.50", calculatorViewModel.outputTotalAmount)
+        /*assertEquals(stub, calculatorViewModel.tipCalculation)
+        assertEquals(10.00, calculatorViewModel.tipCalculation.checkAmount)
         assertEquals(15, calculatorViewModel.tipCalculation.tipPct)
         assertEquals(11.50, calculatorViewModel.tipCalculation.grandTotal)*/
     }
