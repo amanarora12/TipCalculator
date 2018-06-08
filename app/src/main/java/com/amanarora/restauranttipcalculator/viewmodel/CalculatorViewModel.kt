@@ -1,7 +1,6 @@
 package com.amanarora.restauranttipcalculator.viewmodel
 
 import android.app.Application
-import android.databinding.BaseObservable
 import android.util.Log
 import com.amanarora.restauranttipcalculator.R
 import com.amanarora.restauranttipcalculator.model.RestaurantCalculator

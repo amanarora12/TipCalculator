@@ -13,7 +13,10 @@ import com.amanarora.restauranttipcalculator.viewmodel.CalculatorViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), SaveDialogFragment.Callback {
+class MainActivity : AppCompatActivity(), SaveDialogFragment.Callback, LoadDialogFragment.Callback {
+    override fun onTipSelected(name: String) {
+        Snackbar.make(binding.root, "Loaded $name",Snackbar.LENGTH_SHORT).show()
+    }
 
     override fun onSaveTip(name: String) {
         binding.vm?.saveCurrentTip(name)
@@ -51,8 +54,17 @@ class MainActivity : AppCompatActivity(), SaveDialogFragment.Callback {
                 showSaveDialog()
                 true
             }
+            R.id.action_load -> {
+                showLoadDialog()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showLoadDialog() {
+        val loadDialog = LoadDialogFragment()
+        loadDialog.show(supportFragmentManager, "LoadDialog")
     }
 
     private fun showSaveDialog() {
