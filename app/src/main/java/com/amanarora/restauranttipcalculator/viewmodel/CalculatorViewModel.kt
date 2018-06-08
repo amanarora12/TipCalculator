@@ -10,21 +10,23 @@ import com.amanarora.restauranttipcalculator.model.TipCalculation
 class CalculatorViewModel @JvmOverloads constructor(
         app: Application, val calculator : RestaurantCalculator = RestaurantCalculator()) : ObservableViewModel(app) {
 
+    private var lastTipCalculated = TipCalculation()
+
     var inputCheckAmount = ""
     var inputTipPercentage = ""
 
-    var outputCheckAmount = ""
-    var outputTipAmount = ""
-    var outputTotalAmount = ""
+    val outputCheckAmount get() = getApplication<Application>().getString(R.string.dollar_amount,lastTipCalculated.checkAmount)
+    val outputTipAmount get() = getApplication<Application>().getString(R.string.dollar_amount, lastTipCalculated.tipAmount)
+    val outputTotalAmount get() = getApplication<Application >().getString(R.string.dollar_amount, lastTipCalculated.grandTotal)
+    val locationName get() = lastTipCalculated.locationName
 
     init {
         updateOutputs(TipCalculation())
     }
 
     private fun updateOutputs(tc: TipCalculation) {
-        outputCheckAmount = getApplication<Application>().getString(R.string.dollar_amount,tc.checkAmount)
-        outputTipAmount = getApplication<Application>().getString(R.string.dollar_amount, tc.tipAmount)
-        outputTotalAmount = getApplication<Application >().getString(R.string.dollar_amount, tc.grandTotal)
+        lastTipCalculated = tc
+        notifyChange()
     }
 
     fun calculateTip() {
@@ -34,9 +36,15 @@ class CalculatorViewModel @JvmOverloads constructor(
         if (checkAmount != null && tipPct != null) {
             Log.d(TAG, "Check Amount: $checkAmount and Tip Percent: $tipPct")
             updateOutputs(calculator.calculateTip(checkAmount, tipPct))
-            notifyChange()
         }
 
+    }
+
+    fun saveCurrentTip(name: String) {
+        Log.d(TAG, "saving location $name")
+        val tipToSave = lastTipCalculated.copy(locationName = name)
+        calculator.saveTipCalculation(tipToSave)
+        updateOutputs(tipToSave)
     }
 }
 

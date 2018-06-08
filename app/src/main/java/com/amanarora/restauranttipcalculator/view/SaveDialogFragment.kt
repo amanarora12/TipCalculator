@@ -36,8 +36,8 @@ class SaveDialogFragment : DialogFragment() {
 
             AlertDialog.Builder(ctx)
                     .setView(editText)
-                    .setPositiveButton(R.string.action_save, null)
-                    .setNegativeButton(R.string.action_cancel, {_,_ ->  onSave(editText)})
+                    .setPositiveButton(R.string.action_save,  {_,_ ->  onSave(editText)})
+                    .setNegativeButton(R.string.action_cancel,null)
                     .create()
 
         }
