@@ -5,7 +5,12 @@ A simple tip calculator using MVVM with Data Binding.
 
 TipCalculator is a demo of the latest libraries and tools used in Android. As a summary:
 
-Entirely written in Kotlin
-Uses MVVM Architecture
-Uses Architecture Components - ViewModel and LiveData
-Uses DataBinding Library
+<ul>
+  <li>Entirely written in Kotlin</li>
+  <li>Uses MVVM Architecture</li>
+  <li>Uses Architecture Components - ViewModel and LiveData</li>
+  <li>Uses DataBinding Library</li>
+</ul>
+
+
+
