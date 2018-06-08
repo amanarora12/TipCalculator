@@ -1,6 +1,8 @@
 package com.amanarora.restauranttipcalculator.viewmodel
 
 import android.app.Application
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.util.Log
 import com.amanarora.restauranttipcalculator.R
 import com.amanarora.restauranttipcalculator.model.RestaurantCalculator
@@ -44,6 +46,25 @@ class CalculatorViewModel @JvmOverloads constructor(
         val tipToSave = lastTipCalculated.copy(locationName = name)
         calculator.saveTipCalculation(tipToSave)
         updateOutputs(tipToSave)
+    }
+
+    fun loadSavedTipCalculationSummaries(): LiveData<List<TipCalculationSummaryItem>> {
+        return Transformations.map(calculator.loadSavedTipCalculations(),{ tipCalculationObjects: List<TipCalculation> ->
+            tipCalculationObjects.map {
+                TipCalculationSummaryItem(it.locationName,
+                        getApplication<Application>().getString(R.string.dollar_amount,it.grandTotal))
+            }
+        })
+    }
+
+    fun loadTipCalculation(name: String) {
+        val tc = calculator.loadTipCalculationByLocationName(name)
+        if (tc != null) {
+            inputCheckAmount = tc.checkAmount.toString()
+            inputTipPercentage = tc.tipPct.toString()
+            updateOutputs(tc)
+            notifyChange()
+        }
     }
 }
 

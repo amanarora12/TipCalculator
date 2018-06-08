@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SaveDialogFragment.Callback, LoadDialogFragment.Callback {
     override fun onTipSelected(name: String) {
+        binding.vm?.loadTipCalculation(name)
         Snackbar.make(binding.root, "Loaded $name",Snackbar.LENGTH_SHORT).show()
     }
 
